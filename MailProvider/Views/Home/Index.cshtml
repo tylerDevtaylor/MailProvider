@@ -1,0 +1,24 @@
+﻿@model LoginModel
+<form method="post" asp-controller="Gmail" asp-action="Login" id="myForm">
+    <div>
+        <span >@Html.LabelFor(x => x.Username)</span>
+        <span id="username">@Html.TextBoxFor(m => m.Username)</span>
+        @* <input type="hidden" name="Span1Value" id="hiddenSpan1" /> *@
+    
+    </div>
+    <div>
+        <span>@Html.LabelFor(x => x.Password)</span>
+        <span>@Html.PasswordFor(m => m.Password)</span>
+        @* <input type="hidden" name="Span2Value" id="hiddenSpan2" /> *@
+    </div>
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+</form>
+@* <script>
+    document.getElementById("myForm").addEventListener("submit", function () {
+        // Copy span values into hidden inputs
+        document.getElementById("hiddenSpan1").value = document.getElementById("username").textContent;
+        document.getElementById("hiddenSpan2").value = document.getElementById("password").textContent;
+    });
+</script> *@
