@@ -26,6 +26,8 @@ namespace MailProvider.Controllers
         {
             try
             {
+                //var response = await GetCredentials(email, password).ConfigureAwait(false);
+                
                 if (email != "tyler.taylor.dev@gmail.com" || password != "test1")
                 {
                     return View("Invalid");
@@ -39,7 +41,7 @@ namespace MailProvider.Controllers
                 return BadRequest();
             }
         }
-        private async Task<(UserCredential, string)> GetCredentials()
+        private async Task<(UserCredential, string)> GetCredentials(string email, string password)
         {
             try
             {
