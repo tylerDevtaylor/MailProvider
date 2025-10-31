@@ -22,11 +22,11 @@ namespace MailProvider.Controllers
 
 
         [HttpPost("Login")]
-        public async Task<ActionResult> Login(string username, string password)
+        public async Task<ActionResult> Login(string email, string password)
         {
             try
             {
-                if (username != "tyler.taylor.dev@gmail.com" || password != "test1")
+                if (email != "tyler.taylor.dev@gmail.com" || password != "test1")
                 {
                     return View("Invalid");
                 }
