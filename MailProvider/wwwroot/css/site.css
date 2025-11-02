@@ -8,7 +8,7 @@ html {
   }
 }
 
-.btn:hover, .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+.btn:hover, .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus {
     box-shadow: 0 0 0 0.1rem red, 0 0 0 0.25rem darkred;
     background-color: black;
     
@@ -34,11 +34,12 @@ div.modal-header {
     justify-content: flex-end;
 }
 div.modal-content {
-    color: darkred;
-    background-color: darkgray;
+    color: red;
+    background-color: #272727;
 }
-input {
-    color: gray;
+input.form-control:focus {
+    box-shadow: unset;
+    background-color: white;
 }
 div.modal-footer{
     display: flex;
@@ -46,6 +47,11 @@ div.modal-footer{
     justify-content: center;
 }
 
+h1.navbar-brand {
+    color: black;
+    font-weight: 200;
+    font-family: Apple Chancery, cursive;
+}
 
 main {
     display: flex;
@@ -57,8 +63,21 @@ footer {
     background-color: darkred;
     height: 10px;
 }
+nav#headbar {
+    background-color: darkred;
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+}
 header {
   background-color: darkred;
+    width: 100vw;
+}
+div.container-fluid {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 div.container {
     display: flex;
@@ -99,17 +118,31 @@ div.mailContainer {
 div.options {
     border: 2px solid darkred;
     height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
-
 div.mail {
     border: 2px solid darkred;
     height: 90vh;
     display: flex;
     flex-direction: column;
     background-color: #272727;
+    overflow-y: scroll;
 }
 div.mailPackets {
-    border: 1px solid darkred;
     display: flex;
     flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    justify-self: center;
+}
+button#messageModalButton {
+    
+    border: 1px solid darkred;
+    background-color: #272727;
+    color: white;
+    width: 62vw;
+    
 }

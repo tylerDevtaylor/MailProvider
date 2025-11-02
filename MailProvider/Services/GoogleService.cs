@@ -80,7 +80,7 @@ namespace MailProvider.Services
                 // Fetch messages
                 var request = service.Users.Messages.List("me");
                 request.LabelIds = "INBOX"; // Filter for inbox messages
-                request.MaxResults = 10;   // Limit to 10 messages
+                request.MaxResults = 20;   // Limit to 10 messages
 
                 var response = await request.ExecuteAsync();
 
