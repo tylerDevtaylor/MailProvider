@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Google;
-using Google.Apis.Auth.OAuth2;
-using Google.Apis.Gmail.v1;
+﻿using Google.Apis.Auth.OAuth2;
+using Microsoft.AspNetCore.Mvc;
+using MailProvider.Services;
+using System.Text.Json;
 using MailProvider.Models;
-using Google.Apis.Util.Store;
-using Google.Apis.Services;
-using System.Net;
 
 namespace MailProvider.Controllers
 {
@@ -14,10 +11,15 @@ namespace MailProvider.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly ILogger<GmailController> _log;
-        public GmailController(IConfiguration configuration, ILogger<GmailController> log)
+        private readonly IHttpContextAccessor _sessionContext;
+        private readonly GoogleService _googleService;
+
+        public GmailController(IConfiguration configuration, ILogger<GmailController> log, IHttpContextAccessor sessionContext, GoogleService googleService)
         {
             _configuration = configuration;
             _log = log;
+            _sessionContext = sessionContext;
+            _googleService = googleService;
         }
 
 
@@ -26,14 +28,33 @@ namespace MailProvider.Controllers
         {
             try
             {
-                //var response = await GetCredentials(email, password).ConfigureAwait(false);
-                
                 if (email != "tyler.taylor.dev@gmail.com" || password != "test1")
                 {
                     return View("Invalid");
                 }
+                
+                var response = await _googleService.GetCredentials(email, password).ConfigureAwait(false);
+                if (response.Item1 is null)
+                {
+                    Console.WriteLine($"Null Google User Credential. email: {email}.");
+                    return View("Invalid");
+                }
 
-                return Redirect($"../Home/Privacy");
+                var session = _sessionContext.HttpContext!.Session;
+                var user = new User()
+                {
+                    UserId = response.Item1.UserId,
+                    Token = new TokenResponse()
+                    {
+                        AccessToken = response.Item1.Token.AccessToken,
+                        RefreshToken = response.Item1.Token.RefreshToken,
+                        TokenType = response.Item1.Token.TokenType
+                    }
+                };
+                var serializedUser = JsonSerializer.Serialize(response.Item1);
+                session.SetString("User", serializedUser);
+                
+                return Redirect($"../Home");
             }
             catch (Exception e)
             {
@@ -41,50 +62,32 @@ namespace MailProvider.Controllers
                 return BadRequest();
             }
         }
-        private async Task<(UserCredential, string)> GetCredentials(string email, string password)
+
+        [HttpGet("Dashboard")]
+        public async Task<ActionResult> GetDashboard()
         {
             try
             {
-                string[] Scopes = [GmailService.Scope.GmailReadonly]; // Define required scopes
-                string ApplicationName = "MailProvider";
-                UserCredential credential;
+                var sessionUser = _sessionContext.HttpContext!.Session.GetString("User");
                 
-                using (var stream = new FileStream("client_secrets.json", FileMode.Open, FileAccess.Read))
+                if (sessionUser is null)
                 {
-                    string credPath = "Credentials.json";
-                    credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
-                        (await GoogleClientSecrets.FromStreamAsync(stream)).Secrets,
-                        Scopes,
-                        "user",
-                        CancellationToken.None,
-                        new FileDataStore(credPath, true));
+                    return View("Invalid");
                 }
 
-                return (credential, ApplicationName);
+                var user = JsonSerializer.Deserialize<User>(sessionUser);
+
+                if (user is null)
+                {
+                    return View("Invalid");
+                }
+                var response = await _googleService.GetMessagesAsync(user).ConfigureAwait(false);
+                return View("Dashboard", response);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 throw;
-            }
-        }
-        public async Task<ActionResult<BaseResponse<dynamic>>> Authenticate(string email, string password)
-        {
-            try
-            {
-                var creds = await GetCredentials();
-                var service = new GmailService(new BaseClientService.Initializer
-                {
-                    HttpClientInitializer = creds.Item1,
-                    ApplicationName = creds.Item2,
-                });
-                var messages = service.Users.Messages.List("me");
-                return new BaseResponse<dynamic>(true);
-            }
-            catch (Exception ex)
-            {
-                _log.LogError(ex, "{service} {controller}: {eventName} Internal Server Error.", "MailProvider", "GmailController", "Authenticate");
-                return StatusCode(500, new BaseResponse<ErrorResponse>(new ErrorResponse(500, "Internal Server Error")));
             }
         }
         

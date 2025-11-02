@@ -1,10 +1,20 @@
-using Google.Apis.Auth.OAuth2;
-using Google.Apis.Gmail.v1;
-using Google.Apis.Util.Store;
+using MailProvider.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(20); // Session timeout
+    options.Cookie.HttpOnly = true; // Security: prevent client-side script access
+    options.Cookie.IsEssential = true; // Required for GDPR compliance
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Use HTTPS only
+    options.Cookie.SameSite = SameSiteMode.Lax; // CSRF protection
+    options.Cookie.Name = ".MyApp.Session"; // Custom session cookie name
+});
+builder.Services.AddScoped<GoogleService>();
 
 var app = builder.Build();
 
@@ -16,6 +26,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseSession();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

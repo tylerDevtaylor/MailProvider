@@ -55,7 +55,7 @@ main {
 }
 footer {
     background-color: darkred;
-    width: 100vw;
+    height: 10px;
 }
 header {
   background-color: darkred;
@@ -69,4 +69,47 @@ div.container {
 .btn-primary {
     background-color: darkred;
     border-color: red;
+}
+
+div.containerDashboard {
+    border: 2px solid darkred;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+div.taskBar {
+    border: 2px solid darkred;
+    height: 10vh;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+div.mailContainer {
+    border: 2px;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    color: white;
+}
+
+div.options {
+    border: 2px solid darkred;
+    height: 90vh;
+}
+
+div.mail {
+    border: 2px solid darkred;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #272727;
+}
+div.mailPackets {
+    border: 1px solid darkred;
+    display: flex;
+    flex-direction: column;
 }

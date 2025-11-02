@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+@model List<Message>
+<div class="containerDashboard">
+    <div class="taskBar">taskbar</div>
+    <div class="mailContainer">
+        <div class="options">options</div>
+        <div class="mail">
+            <div>mail</div>
+            <div>
+                @foreach (var item in Model)
+                {
+                    <div class="mailPackets">
+                        <div>@TransmuteDateTime(@item.Date)</div>
+                        <div>@item.Header</div>
+                        <div>@item.Body</div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@functions {
+
+    public string TransmuteDateTime(long? param)
+    {
+        var time = param ?? 0;
+        DateTime dateTime = DateTimeOffset.FromUnixTimeMilliseconds(time).DateTime;
+        return dateTime.ToString("g");
+    }
+
+}
