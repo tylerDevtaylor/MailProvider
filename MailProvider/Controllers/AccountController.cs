@@ -53,7 +53,7 @@ namespace MailProvider.Controllers
                 
                 var user = JsonSerializer.Serialize(accountRecord);
                 _sessionContext.HttpContext!.Session.SetString("User", user);
-                return View($"../Home");
+                return View("Dashboard");
             }
             catch (Exception ex)
             {
@@ -88,7 +88,7 @@ namespace MailProvider.Controllers
                 _sessionContext.HttpContext!.Session.SetString("User", userString);
 
 
-                return Redirect($"../Dashboard");
+                return Redirect("Dashboard");
             }
             catch (Exception e)
             {
