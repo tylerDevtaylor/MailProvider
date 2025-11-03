@@ -1,3 +1,4 @@
+using MailProvider.Interfaces;
 using MailProvider.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,7 +16,7 @@ builder.Services.AddSession(options =>
     options.Cookie.Name = ".MyApp.Session"; // Custom session cookie name
 });
 builder.Services.AddScoped<GoogleService>();
-
+builder.Services.AddSingleton<IPasswordService, PasswordService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

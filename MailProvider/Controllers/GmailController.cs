@@ -13,54 +13,15 @@ namespace MailProvider.Controllers
         private readonly ILogger<GmailController> _log;
         private readonly IHttpContextAccessor _sessionContext;
         private readonly GoogleService _googleService;
-
-        public GmailController(IConfiguration configuration, ILogger<GmailController> log, IHttpContextAccessor sessionContext, GoogleService googleService)
+        private readonly PasswordService _passwordService;
+        public GmailController(IConfiguration configuration, ILogger<GmailController> log, IHttpContextAccessor sessionContext, 
+            GoogleService googleService, PasswordService passwordService)
         {
             _configuration = configuration;
             _log = log;
             _sessionContext = sessionContext;
             _googleService = googleService;
-        }
-
-
-        [HttpPost("Login")]
-        public async Task<ActionResult> Login(string email, string password)
-        {
-            try
-            {
-                if (email != "tyler.taylor.dev@gmail.com" || password != "test1")
-                {
-                    return View("Invalid");
-                }
-                
-                var response = await _googleService.GetCredentials(email, password).ConfigureAwait(false);
-                if (response.Item1 is null)
-                {
-                    Console.WriteLine($"Null Google User Credential. email: {email}.");
-                    return View("Invalid");
-                }
-
-                var session = _sessionContext.HttpContext!.Session;
-                var user = new User()
-                {
-                    UserId = response.Item1.UserId,
-                    Token = new TokenResponse()
-                    {
-                        AccessToken = response.Item1.Token.AccessToken,
-                        RefreshToken = response.Item1.Token.RefreshToken,
-                        TokenType = response.Item1.Token.TokenType
-                    }
-                };
-                var serializedUser = JsonSerializer.Serialize(response.Item1);
-                session.SetString("User", serializedUser);
-                
-                return Redirect($"../Home");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return BadRequest();
-            }
+            _passwordService = passwordService;
         }
 
         [HttpGet("Dashboard")]
