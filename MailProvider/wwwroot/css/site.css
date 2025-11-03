@@ -138,11 +138,13 @@ div.mailPackets {
     align-items: center;
     justify-self: center;
 }
-button#messageModalButton {
-    
-    border: 1px solid darkred;
+button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    //border: 1px solid darkred;
     background-color: #272727;
     color: white;
-    width: 62vw;
-    
+    width: 100%;
+    //box-shadow: 0 2px white;
 }

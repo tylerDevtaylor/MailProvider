@@ -10,25 +10,25 @@
             <div>
                 @foreach (var item in Model)
                 {
-                    <button id="messageModalButton" data-bs-toggle="modal" data-bs-target="#messageModal">
+                    <button class="button-3d" data-bs-toggle="modal" data-bs-target="#messageModal@(item.Id)">
                         <div class="mailPackets">
                             <div>@TransmuteDateTime(@item.Date)</div>
-                            <div id="messageHeader">@item.Header.Trim()</div>
-                            <div id="messageBody">@item.Body</div>
+                            <div class="messageHeader">@item.Header.Trim()</div>
+                            <div class="messageBody">@item.Body</div>
                         </div>
                     </button>
-                    <div id="messageModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="..." aria-hidden="true">
+                    <div id="messageModal@(item.Id)" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel@(item.Id)" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                <h5 class="modal-title" id="gmailLoginModal3Label">@TransmuteDateTime(@item.Date)</h5>
+                                    <h5 class="modal-title" id="messageModalLabel@(item.Id)">@item.Header.Trim()</h5>
                                 </div>
                                 <div class="modal-body">
-                                    body test
+                                    @Html.Raw(item.Html)
                                 </div>
                                 <div class="modal-footer">
-                                   footer
+                                    @TransmuteDateTime(@item.Date)
                                 </div>
                             </div>
                         </div>
@@ -38,15 +38,11 @@
         </div>
     </div>
 </div>
-
-
 @functions {
-
     public string TransmuteDateTime(long? param)
     {
         var time = param ?? 0;
         DateTime dateTime = DateTimeOffset.FromUnixTimeMilliseconds(time).DateTime.AddHours(-4);
         return dateTime.ToString("g");
     }
-
 }
