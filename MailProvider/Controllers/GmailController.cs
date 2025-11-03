@@ -13,15 +13,13 @@ namespace MailProvider.Controllers
         private readonly ILogger<GmailController> _log;
         private readonly IHttpContextAccessor _sessionContext;
         private readonly GoogleService _googleService;
-        private readonly PasswordService _passwordService;
         public GmailController(IConfiguration configuration, ILogger<GmailController> log, IHttpContextAccessor sessionContext, 
-            GoogleService googleService, PasswordService passwordService)
+            GoogleService googleService)
         {
             _configuration = configuration;
             _log = log;
             _sessionContext = sessionContext;
             _googleService = googleService;
-            _passwordService = passwordService;
         }
 
         [HttpGet("Dashboard")]

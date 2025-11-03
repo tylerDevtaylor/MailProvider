@@ -7,7 +7,7 @@
         public string LastName { get; set; }
         public string Email { get; set; }
         public string PasswordHash { get; set; }
-        public DateTime DateAdded { get; set; }
+        public DateTime? DateAdded { get; set; }
         public bool Active { get; set; }
     }
 }

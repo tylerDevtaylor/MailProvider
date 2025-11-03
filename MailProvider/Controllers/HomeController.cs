@@ -1,6 +1,7 @@
 using MailProvider.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace MailProvider.Controllers
 {
@@ -22,6 +23,10 @@ namespace MailProvider.Controllers
             return View();
         }
 
+        public IActionResult Register()
+        {
+            return View();
+        }
         public IActionResult Privacy()
         {
             return View();
