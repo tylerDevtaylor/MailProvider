@@ -16,17 +16,19 @@ namespace MailProvider.Controllers
         private readonly ILogger<GmailController> _log;
         private readonly IPasswordService _passwordService;
         private readonly IHttpContextAccessor _sessionContext;
+        private readonly IGoogleService _googleService;
         
         public AccountController(IConfiguration configuration, ILogger<GmailController> log, IPasswordService passwordService,
-            IHttpContextAccessor sessionContext)
+            IHttpContextAccessor sessionContext, IGoogleService googleService)
         {
             _configuration = configuration;
             _log = log;
             _passwordService = passwordService;
             _sessionContext = sessionContext;
+            _googleService = googleService;
         }
         [HttpPost("Register")]
-        public async Task<ActionResult> RegisterAccount(RegisterUser register)
+        public async Task<IActionResult> RegisterAccount(RegisterUser register)
         {
             try
             {
@@ -49,11 +51,22 @@ namespace MailProvider.Controllers
                     DateAdded = DateTime.Now
                 };
                 var connection = new SqlConnection(_configuration["ConnectionStrings:UserAccount"]);
-                _ = await connection.ExecuteAsync("InsertNewUserAccount", accountRecord, commandType:CommandType.StoredProcedure).ConfigureAwait(false);
-                
-                var user = JsonSerializer.Serialize(accountRecord);
-                _sessionContext.HttpContext!.Session.SetString("User", user);
-                return View("Dashboard");
+                var recordSaved = await connection.ExecuteAsync("InsertNewUserAccount", accountRecord, commandType:CommandType.StoredProcedure).ConfigureAwait(false);
+                if (recordSaved != 1)
+                {
+                    _log.LogError("AccountController <> RegisterAccount: User account not created: email: {email}", register.Email);
+                    return View("Invalid");
+                }
+                var userString = JsonSerializer.Serialize(accountRecord);
+                _sessionContext.HttpContext!.Session.SetString("User", userString);
+                if (_sessionContext.HttpContext!.Session.GetString("User") == null)
+                {
+                    _log.LogError("AccountController <> RegisterAccount: User session not saved: email {email}", register.Email);
+                    return RedirectToAction("Index", "Home");
+                }
+
+                var model = await _googleService.GetMessagesAsync(accountRecord.Email).ConfigureAwait(false);
+                return View("Dashboard", model);
             }
             catch (Exception ex)
             {
@@ -63,7 +76,7 @@ namespace MailProvider.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<ActionResult> Login(string email, string password)
+        public async Task<IActionResult> Login(string email, string password)
         {
             try
             {
@@ -86,14 +99,30 @@ namespace MailProvider.Controllers
 
                 var userString = JsonSerializer.Serialize(user);
                 _sessionContext.HttpContext!.Session.SetString("User", userString);
+                
+                var model = await _googleService.GetMessagesAsync(user.Email).ConfigureAwait(false);
 
-
-                return Redirect("Dashboard");
+                return View("Dashboard", model);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 return BadRequest();
+            }
+        }
+
+        [Route("Logout")]
+        public IActionResult Logout()
+        {
+            try
+            {
+                _sessionContext.HttpContext?.Session.Remove("User");
+                return Redirect("/");
+            }
+            catch (Exception e)
+            {
+                _log.LogError(e, "AccountController <> Logout: Error trying to logout user: ");
+                return View("Error");
             }
         }
     }

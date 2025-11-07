@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MailProvider.Services;
 using System.Text.Json;
+using MailProvider.Interfaces;
 using MailProvider.Models;
 
 namespace MailProvider.Controllers
@@ -12,9 +13,9 @@ namespace MailProvider.Controllers
         private readonly IConfiguration _configuration;
         private readonly ILogger<GmailController> _log;
         private readonly IHttpContextAccessor _sessionContext;
-        private readonly GoogleService _googleService;
+        private readonly IGoogleService _googleService;
         public GmailController(IConfiguration configuration, ILogger<GmailController> log, IHttpContextAccessor sessionContext, 
-            GoogleService googleService)
+            IGoogleService googleService)
         {
             _configuration = configuration;
             _log = log;
@@ -34,13 +35,13 @@ namespace MailProvider.Controllers
                     return View("Invalid");
                 }
 
-                var user = JsonSerializer.Deserialize<User>(sessionUser);
+                var user = JsonSerializer.Deserialize<UserAccount>(sessionUser);
 
                 if (user is null)
                 {
                     return View("Invalid");
                 }
-                var response = await _googleService.GetMessagesAsync(user).ConfigureAwait(false);
+                var response = await _googleService.GetMessagesAsync(user.Email).ConfigureAwait(false);
                 return View("Dashboard", response);
             }
             catch (Exception e)

@@ -15,7 +15,7 @@ builder.Services.AddSession(options =>
     options.Cookie.SameSite = SameSiteMode.Lax; // CSRF protection
     options.Cookie.Name = ".MyApp.Session"; // Custom session cookie name
 });
-builder.Services.AddScoped<GoogleService>();
+builder.Services.AddScoped<IGoogleService, GoogleService>();
 builder.Services.AddSingleton<IPasswordService, PasswordService>();
 var app = builder.Build();
 

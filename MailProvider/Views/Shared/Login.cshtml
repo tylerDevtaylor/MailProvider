@@ -1,29 +1,19 @@
-﻿@model RegisterUser
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#RegisterModal3">
-    Register
-</button>
-<div class="modal fade" id="RegisterModal3" tabindex="-1" aria-labelledby="RegisterModal3Label" aria-hidden="true">
+﻿
+@model LoginModel?
+
+<div class="modal fade" id="gmailLoginModal3" tabindex="-1" aria-labelledby="gmailLoginModal3Label" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form method="post" asp-controller="Account" asp-action="RegisterAccount" id="myForm">
+            <form method="post" asp-controller="Account" asp-action="Login" id="myForm">
                 <div class="modal-header">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    <h5 class="modal-title" id="RegisterModal3Label">Account Registration</h5>
+                    <h5 class="modal-title" id="gmailLoginModal3Label">Gmail Login</h5>
                 </div>
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <span>@Html.LabelFor(x => x.FirstName)</span>
-                        <span id="FirstName">@Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })</span>
-                    </div>
-                    <div class="mb-3">
-                        <span>@Html.LabelFor(x => x.LastName)</span>
-                        <span id="LastName">@Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })</span>
-                    </div>
                     <div class="mb-3">
                         <span>@Html.LabelFor(x => x.Email)</span>
                         <span id="Email">@Html.TextBoxFor(m => m.Email, new { @class = "form-control" })</span>
                     </div>
-
                     <div class="mb-3">
                         <span>@Html.LabelFor(x => x.Password)</span>
                         <span id="Password">@Html.PasswordFor(m => m.Password, new { @class = "form-control" })</span>
@@ -32,10 +22,9 @@
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Submit</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-secondary" asp-area="" asp-controller="Home" asp-action="">Register</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
-
