@@ -9,7 +9,6 @@ html {
 }
 
 .btn:hover, .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus {
-    box-shadow: 0 0 0 0.1rem red, 0 0 0 0.25rem darkred;
     background-color: black;
     
 }
@@ -50,34 +49,45 @@ div.modal-footer{
 h1.navbar-brand {
     color: black;
     font-weight: 200;
-    font-family: Apple Chancery, cursive;
+    font-family: 'Helvetica', sans-serif;
 }
 
 main {
     display: flex;
+    
+}
+h1#Title.navbar-brand.text-light {
+    margin: unset;
+}
+a.nav-link.text-light {
+    padding: 0 0 0 0;
+    margin: 0 0 0 0;
+}
+#headerWithIcon {
+    display: flex;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
-    
+    align-content: center;
 }
 footer {
     background-color: darkred;
     height: 10px;
 }
-nav#headbar {
+#headbar {
     background-color: darkred;
-    display: flex;
-    flex-direction: row;
-    width: 100vw;
-}
-header {
-  background-color: darkred;
     width: 100vw;
 }
 div.container-fluid {
     width: 100%;
     display: flex;
+    
+}
+ul.navbar-nav.flex-grow-1 {
+    display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-end;
+    gap: 20px;
 }
 div.messageHeader {
     display: flex;
