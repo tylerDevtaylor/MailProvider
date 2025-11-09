@@ -50,6 +50,35 @@ namespace MailProvider.Controllers
                 throw;
             }
         }
+
+        [HttpPost("Compose")]
+        public async Task<ActionResult> ComposeMessage(Compose compose)
+        {
+            try
+            {
+                var sessionUser = _sessionContext.HttpContext!.Session.GetString("User");
+
+                if (sessionUser is null)
+                {
+                    return View("Invalid");
+                }
+
+                var user = JsonSerializer.Deserialize<UserAccount>(sessionUser);
+
+                if (user is null)
+                {
+                    return View("Invalid");
+                }
+                var response = await _googleService.ComposeMessageAsync(user.Email, compose).ConfigureAwait(false);
+                return View("Dashboard",response);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
         
     }
 }

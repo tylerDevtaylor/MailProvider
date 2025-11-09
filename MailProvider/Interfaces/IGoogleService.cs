@@ -8,5 +8,7 @@ namespace MailProvider.Interfaces
     {
         public Task<GmailService> GetCredentials(string email);
         public Task<IList<Message>> GetMessagesAsync(string email);
+
+        public Task<bool> ComposeMessageAsync(string email, Compose compose);
     }
 }

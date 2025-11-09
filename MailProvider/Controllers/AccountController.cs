@@ -100,9 +100,12 @@ namespace MailProvider.Controllers
                 var userString = JsonSerializer.Serialize(user);
                 _sessionContext.HttpContext!.Session.SetString("User", userString);
                 
-                var model = await _googleService.GetMessagesAsync(user.Email).ConfigureAwait(false);
-
-                return View("Dashboard", model);
+                var messages = await _googleService.GetMessagesAsync(user.Email).ConfigureAwait(false);
+                var dashboardViewModel = new DashboardViewModel
+                {
+                    Messages = messages
+                };
+                return View("Dashboard", dashboardViewModel);
             }
             catch (Exception e)
             {

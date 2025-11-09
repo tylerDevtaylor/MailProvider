@@ -79,6 +79,23 @@ div.container-fluid {
     flex-direction: row;
     justify-content: space-between;
 }
+div.messageHeader {
+    display: flex;
+    align-self: start;
+    flex-wrap: wrap;
+    
+}
+div.modal-body {
+    background-color: white;
+    border: solid;
+    border-width: 1em;
+    border-color: #272727;
+}
+div.modal-content {
+    width: 130%;
+
+    
+}
 div.container {
     display: flex;
     flex-direction: row;
@@ -127,8 +144,9 @@ div.mail {
     height: 90vh;
     display: flex;
     flex-direction: column;
-    background-color: #272727;
     overflow-y: scroll;
+    background-color: #555;
+    scrollbar-width: thin;
 }
 div.mailPackets {
     display: flex;
@@ -138,11 +156,31 @@ div.mailPackets {
     align-items: center;
     justify-self: center;
 }
-button {
+button.button-3d {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    background-color: #272727;
+    background-color: #3f3f3d;
     color: white;
     width: 100%;
+    border-radius: 7px;
+    gap: 5px;
 }
+
+    button#composeMessageButton {
+        height: 10%;
+        justify-self: center;
+    }
+
+
+
+    /* Pressed effect */
+    /*.button-3d:active {
+        transform: translateY(3px);
+        box-shadow: 0 2px 0 #2d6e2f, 0 3px 5px rgba(0,0,0,0.3);
+    }*/
+
+    /* Hover effect */
+    /*.button-3d:hover {
+        background: linear-gradient(to bottom, #5CBF60 0%, #4CAF50 100%);
+    }*/

@@ -6,6 +6,7 @@ using Google.Apis.Util;
 using Google.Apis.Util.Store;
 using MailProvider.Models;
 using System.Text;
+using System.Web;
 using MailProvider.Interfaces;
 using Message = MailProvider.Models.Message;
 
@@ -73,16 +74,16 @@ namespace MailProvider.Services
                     var req = service.Users.Messages.Get("me", msg.Id);
                     var rep = await req.ExecuteAsync();
                     var htmlPart = "";
-                    if (msg.Payload is not null)
+                    if (rep.Payload is not null)
                     {
-                        htmlPart = GetHtmlPart(msg.Payload);
+                        htmlPart = GetHtmlPart(rep.Payload);
                     }
 
                     var m = new Message()
                     {
                         Id = rep.Id,
                         Body = rep.Raw,
-                        Header = rep.Snippet,
+                        Header = HttpUtility.HtmlDecode(rep.Snippet),
                         Date = rep.InternalDate,
                         Html = htmlPart
                     };
@@ -98,6 +99,18 @@ namespace MailProvider.Services
             }
         }
 
+        public async Task<bool> ComposeMessageAsync(string email, Compose compose)
+        {
+            try
+            {
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return false;
+            }
+        }
 
         private string GetHtmlPart(MessagePart payload)
         {
