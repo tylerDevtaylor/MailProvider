@@ -79,6 +79,20 @@ namespace MailProvider.Controllers
             }
         }
 
+
+        [HttpPost("Dashboard-Search")]
+        public async Task<ActionResult> GetDashboardBySearch(bool nextPage, string searchArgs = "")
+        {
+            try
+            {
+                //todo:this endpoint will allow next 50/last 50 messages to be acquired or to search messages for phrase/sender
+                return View("Invalid");
+            }
+            catch (Exception e)
+            {
+                return View("Invalid");
+            }
+        }
         
     }
 }

@@ -48,9 +48,12 @@ namespace MailProvider.Controllers
                 return View();
             }
 
-            var model = await _googleService.GetMessagesAsync(user.Email).ConfigureAwait(false);
-
-            return View("Dashboard", model);
+            var messages = await _googleService.GetMessagesAsync(user.Email).ConfigureAwait(false);
+            var dashboardViewModel = new DashboardViewModel
+            {
+                Messages = messages
+            };
+            return View("Dashboard", dashboardViewModel);
         }
         
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

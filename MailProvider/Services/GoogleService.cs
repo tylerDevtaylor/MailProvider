@@ -8,6 +8,7 @@ using MailProvider.Models;
 using System.Text;
 using System.Web;
 using MailProvider.Interfaces;
+using Microsoft.CodeAnalysis.Elfie.Extensions;
 using Message = MailProvider.Models.Message;
 
 namespace MailProvider.Services
@@ -21,7 +22,7 @@ namespace MailProvider.Services
             _configuration = configuration;
             _log = log;
         }
-        public async Task<GmailService> GetCredentials(string email)
+        public async Task<GmailService> GetCredentialsAsync(string email)
         {
             try
             {
@@ -59,7 +60,7 @@ namespace MailProvider.Services
             try
             {
 
-                var service = await GetCredentials(email).ConfigureAwait(false);
+                var service = await GetCredentialsAsync(email).ConfigureAwait(false);
 
                 // Fetch messages
                 var request = service.Users.Messages.List("me");
@@ -82,8 +83,8 @@ namespace MailProvider.Services
                     var m = new Message()
                     {
                         Id = rep.Id,
-                        Body = rep.Raw,
-                        Header = HttpUtility.HtmlDecode(rep.Snippet),
+                        Body = rep.Payload.Headers.First(x => x.Name == "Subject")?.Value,
+                        Header = rep.Payload.Headers.First(x => x.Name == "From")?.Value,
                         Date = rep.InternalDate,
                         Html = htmlPart
                     };
@@ -103,6 +104,31 @@ namespace MailProvider.Services
         {
             try
             {
+                var service = await GetCredentialsAsync(email).ConfigureAwait(false);
+                var message = new Google.Apis.Gmail.v1.Data.Message
+                {
+                    Payload = new MessagePart
+                    {
+                        Headers = new List<MessagePartHeader>
+                        {
+                            new MessagePartHeader
+                            {
+                                Name = "Subject",
+                                Value = compose.Subject
+                            },
+                            new MessagePartHeader
+                            {
+                                Name = "To",
+                                Value = compose.ToEmail
+                            }
+                        },
+                        Body = new MessagePartBody
+                        {
+                            Data = compose.Body
+                        }
+                    },
+                };
+                var request = service.Users.Messages.Send(message, email);
                 return true;
             }
             catch (Exception e)

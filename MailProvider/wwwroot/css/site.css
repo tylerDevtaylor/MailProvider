@@ -27,25 +27,11 @@ body {
   background-attachment: fixed;
   min-height: 100vh;
 }
-div.modal-header {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-}
-div.modal-content {
-    color: red;
-    background-color: #272727;
-}
+
 input.form-control:focus {
     box-shadow: unset;
     background-color: white;
 }
-div.modal-footer{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-}
-
 h1.navbar-brand {
     color: black;
     font-weight: 200;
@@ -88,23 +74,35 @@ ul.navbar-nav.flex-grow-1 {
     flex-direction: row;
     justify-content: flex-end;
     gap: 20px;
+    padding-right: 2.5%;
 }
 div.messageHeader {
     display: flex;
-    align-self: start;
+    align-self: center;
     flex-wrap: wrap;
     
 }
-div.modal-body {
-    background-color: white;
-    border: solid;
-    border-width: 1em;
-    border-color: #272727;
+div.modal-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
-div.modal-content {
-    width: 130%;
 
-    
+div.modal-content {
+    color: white;
+    background-color: #272727;
+}
+
+div.modal-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+div.modal-body {
+    background-color: #272727
+}
+div.modal-content.modal-content-html {
+    width: 150%;
 }
 div.container {
     display: flex;
@@ -118,14 +116,15 @@ div.container {
 }
 
 div.containerDashboard {
-    border: 2px solid darkred;
+    /*border: 2px solid red;*/
     display: flex;
     flex-direction: column;
     height: 100vh;
+    width: 75vw;
 }
 
 div.taskBar {
-    border: 2px solid darkred;
+    border: 2px solid white;
     height: 10vh;
     display: flex;
     flex-direction: row;
@@ -142,15 +141,15 @@ div.mailContainer {
     color: white;
 }
 
-div.options {
-    border: 2px solid darkred;
+div.compose {
+    border: 2px solid white;
     height: 90vh;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 div.mail {
-    border: 2px solid darkred;
+    border: 2px solid white;
     height: 90vh;
     display: flex;
     flex-direction: column;
@@ -177,20 +176,7 @@ button.button-3d {
     gap: 5px;
 }
 
-    button#composeMessageButton {
-        height: 10%;
-        justify-self: center;
-    }
-
-
-
-    /* Pressed effect */
-    /*.button-3d:active {
-        transform: translateY(3px);
-        box-shadow: 0 2px 0 #2d6e2f, 0 3px 5px rgba(0,0,0,0.3);
-    }*/
-
-    /* Hover effect */
-    /*.button-3d:hover {
-        background: linear-gradient(to bottom, #5CBF60 0%, #4CAF50 100%);
-    }*/
+button#composeMessageButton {
+    height: 10%;
+    justify-self: center;
+}

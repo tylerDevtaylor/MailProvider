@@ -51,12 +51,12 @@
                     </button>
                     <div id="messageModal@(item.Id)" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel@(item.Id)" aria-hidden="true">
                         <div class="modal-dialog">
-                            <div class="modal-content">
+                            <div class="modal-content modal-content-html">
                                 <div class="modal-header">
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     <h5 class="modal-title" id="messageModalLabel@(item.Id)">@item.Header.Trim()</h5>
                                 </div>
-                                <div class="modal-body">
+                                <div class="modal-body modal-body-html">
                                     @Html.Raw(item.Html)
                                 </div>
                                 <div class="modal-footer">
