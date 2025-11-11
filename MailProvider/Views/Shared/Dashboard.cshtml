@@ -3,16 +3,16 @@
 }
 @model DashboardViewModel
 <div class="containerDashboard">
-    <div class="taskBar">Mail</div>
+    <div class="taskBar">TaskBar</div>
     <div class="mailContainer">
         <div class="compose">
-            <button class="button-3d" id="composeMessageButton" asp-bs-toggle="modal" asp-bs-target="#composeMessageModal">Compose</button>
-            <div class="modal fade" id="submitComposeMessageModal" tabindex="-1" aria-labeledby="submitComposeMessageModalLabel" aria-hidden="true">
+            <button class="button-3d" asp-bs-toggle="modal" asp-bs-target="#submitComposeMessageModal">Compose</button>
+            <div id="submitComposeMessageModal" class="modal fade" tabindex="-1" role="dialog" aria-labeledby="composeMessageModalLabel">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="submitFormModalLabel">Submit Form</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <h5 class="modal-title" id="submitFormModalLabel">Submit Form</h5>
                         </div>
                         <form asp-action="ComposeMessage" asp-controller="Gmail" method="post">
                             <div class="modal-body">
@@ -49,7 +49,7 @@
                             <div class="messageBody">@item.Body</div>
                         </div>
                     </button>
-                    <div id="messageModal@(item.Id)" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel@(item.Id)" aria-hidden="true">
+                    <div id="messageModal@(item.Id)" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel@(item.Id)">
                         <div class="modal-dialog">
                             <div class="modal-content modal-content-html">
                                 <div class="modal-header">

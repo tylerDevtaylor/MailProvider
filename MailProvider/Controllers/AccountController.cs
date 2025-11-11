@@ -57,16 +57,8 @@ namespace MailProvider.Controllers
                     _log.LogError("AccountController <> RegisterAccount: User account not created: email: {email}", register.Email);
                     return View("Invalid");
                 }
-                var userString = JsonSerializer.Serialize(accountRecord);
-                _sessionContext.HttpContext!.Session.SetString("User", userString);
-                if (_sessionContext.HttpContext!.Session.GetString("User") == null)
-                {
-                    _log.LogError("AccountController <> RegisterAccount: User session not saved: email {email}", register.Email);
-                    return RedirectToAction("Index", "Home");
-                }
-
-                var model = await _googleService.GetMessagesAsync(accountRecord.Email).ConfigureAwait(false);
-                return View("Dashboard", model);
+                
+                return View("Login");
             }
             catch (Exception ex)
             {

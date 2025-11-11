@@ -67,7 +67,7 @@ namespace MailProvider.Services
                 // Fetch messages
                 var request = service.Users.Messages.List("me");
                 request.LabelIds = "INBOX"; // Filter for inbox messages
-                request.MaxResults = 20;   // Limit to 20 messages
+                request.MaxResults = 25;   // Limit to 20 messages
                 var response = await request.ExecuteAsync();
 
                 var messages = new List<Message>();
@@ -107,10 +107,12 @@ namespace MailProvider.Services
             try
             {
 
+                return new List<Message>();
             }
             catch (Exception e)
             {
-                _log.LogError("GoogleService {");
+                _log.LogError(e, "GoogleService {method}: {event} Internal Server Error.", GetType().Name, GetActualMethodNameAsync());
+                return new List<Message>();
             }
         }
 
