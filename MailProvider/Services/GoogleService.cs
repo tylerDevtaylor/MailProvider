@@ -1,4 +1,5 @@
-﻿using Google.Apis.Auth.OAuth2;
+﻿using System.Runtime.CompilerServices;
+using Google.Apis.Auth.OAuth2;
 using Google.Apis.Gmail.v1;
 using Google.Apis.Gmail.v1.Data;
 using Google.Apis.Services;
@@ -17,6 +18,7 @@ namespace MailProvider.Services
     {
         private readonly IConfiguration _configuration;
         private readonly ILogger<GoogleService> _log;
+        private string GetActualMethodNameAsync([CallerMemberName] string name = "") => name;
         public GoogleService(IConfiguration configuration, ILogger<GoogleService> log)
         {
             _configuration = configuration;
@@ -97,6 +99,18 @@ namespace MailProvider.Services
             {
                 Console.WriteLine(e);
                 return new List<Message>();
+            }
+        }
+
+        public async Task<IList<Message>> GetMessagesAsync(string email, bool prev, bool next, string search = "")
+        {
+            try
+            {
+
+            }
+            catch (Exception e)
+            {
+                _log.LogError("GoogleService {");
             }
         }
 
